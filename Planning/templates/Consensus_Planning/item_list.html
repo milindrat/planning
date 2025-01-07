@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item List</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <style>
+        
+        .top-right-button {
+            position: absolute;
+            top: 180px; /* Adjust distance from top */
+            right: 10px; /* Adjust distance from right */
+        }
+        table {
+            position: absolute; /* Positions the table absolutely */
+            top: 250px; /* 20px from the top of the page */
+            border-collapse: collapse;
+            font-size: 12px;
+            width: 100%;  /* Table takes up the full width of its container */
+        
+        }
+        .zoom-buttons {
+            margin-bottom: 80px;
+        }
+       
+        th, td {
+            border: 2px solid #ddd; /* Adds borders to table cells */
+            padding: 8px;
+            text-align: center;
+            font-size: 12px; /* Change to 18px */
+            font-family: Arial,
+        }
+        .filter-container {
+            position: absolute;  /* Optional: If you want to position it more specifically */
+            left: 30px;  /* Distance from the left side */
+            top: 180px;   /* Optional: Distance from the top */
+        }
+        .filter-container select {
+            padding: 10px;
+            font-size: 12px;
+        }
+        .container {
+            height: 75%; /* Table takes up 75% of the container's width */
+            width: 120%;
+            padding: 30px;
+            border-radius: 10px;
+            position: relative;
+            height: 100%;
+            flex: 1;
+            margin-top: 0%;
+        }
+    
+        .other-content {
+            height: 25%;  /* Other content takes up the remaining 25% of the container's width */
+            width: 25%;
+       /* Add some space from the left */
+             /* Optional: Add background color for contrast */
+        }
+        select {
+            text-align: center; /* Centers text horizontally */
+           
+        }
+        h2 {
+           text-align: center; /* Centers text horizontally */
+           margin: 0 auto; /* Auto margins on the left and right */
+           margin-top: 20px; 
+        }
+  
+    </style>
+</head> 
+<body>
+    <h2>Consensus Planning</h2>
+     <!-- Display success or error messages -->
+     {% if messages %}
+     <div class="alert-container">
+         {% for message in messages %}
+             <div class="alert alert-{{ message.tags }}">
+                 {{ message }}
+             </div>
+         {% endfor %}
+     </div>
+ {% endif %}
+ <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">        
+        <ul class="navbar-nav custom-navbar-nav">
+          
+          <li class="nav-item"><a class="nav-link" href="{% url 'upload_excel' %}">Upload</a></li>
+         <!-- <li class="nav-item"><a class="nav-link" href="{% url 'create_user' %}">Create New User</a></li> -->
+          <li class="nav-item ml-auto"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+      </nav>
+      <!--create_user  items  upload_excel  http://127.0.0.1:8000/user/create_user/? -->    
+    
+</div>
+
+
+    <form method="GET">
+        <!-- Filter by Item Category 2  -->
+        <div class="filter-container">
+            <label for="item_category_filter">Filter by Item Category 2: </label>
+            <select name="item_category_filter" id="item_category_filter" onchange="this.form.submit()">
+                <!-- Option to show all items -->
+                <option value="">--All--</option>
+
+                <!-- Loop over the item categories and display them -->
+                {% for category in item_categories %}
+                    <option value="{{ category }}" {% if category == selected_category %}selected{% endif %}>
+                        {{ category }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    </form>
+   
+
+    <form method="POST">
+        {% csrf_token %}
+
+    <button type="submit" class="btn btn-primary top-right-button">Save Changes</button>
+
+    <table border="1" class="table table-striped" id="zoomable-table">
+        <thead>
+            <tr>
+                <th>Sr.No.</th>
+                <th>Item Category 1</th>
+                <th>Item Code</th>
+                <th>Description</th>
+                <th>Item Category 2</th>
+                <th>Location</th>
+                <th>DC</th>
+                <th style="width: 200px;">Supplier</th>
+                <th>ABC Class Revenue</th>
+                <th>ABC Percentage Revenue</th>
+                <th>On Hand</th>
+                <th>Available On Hand</th>
+                <th>Days of Supply</th>
+                <th>To Ship</th>
+                <th>To Receive</th>
+                <th>Last Submitted Quantity</th>
+                <th>Finalized Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item_form_data in item_forms %}
+                <tr>
+                    <td>{{ item_form_data.item.Sr_No }}</td>
+                    <td>{{ item_form_data.item.Item_Category_1 }}</td>
+                    <td>{{ item_form_data.item.Item_code }}</td>
+                    <td>{{ item_form_data.item.Description }}</td>
+                    <td>{{ item_form_data.item.Item_Category_2 }}</td>
+                    <td>{{ item_form_data.item.Location }}</td>
+                    <td>{{ item_form_data.item.Dc }}</td>
+                    <td>{{ item_form_data.item.Supplier }}</td>
+                    <td>{{ item_form_data.item.ABC_class_Revenue }}</td>
+                    <td>{{ item_form_data.item.ABC_percentage_Revenue }}</td>
+                    <td>{{ item_form_data.item.On_hand }}</td>
+                    <td>{{ item_form_data.item.Available_on_hand }}</td>
+                    <td>{{ item_form_data.item.Days_of_supply }}</td>
+                    <td>{{ item_form_data.item.To_ship }}</td>
+                    <td>{{ item_form_data.item.To_receive }}</td>
+                    <td>{{ item_form_data.item.last_submitted_quantity }}</td>
+                    <td>
+                        <input type="number" name="finalized_quantity_{{ item_form_data.item.Sr_No }}" 
+                               value="{{ item_form_data.form.finalized_quantity.value }}" 
+                               class="form-control" style="font-size: 12px; width: 90px; padding: 10px; text-align: center;">
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</form>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

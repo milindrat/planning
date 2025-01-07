@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Consensus Planning{% endblock %} </title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+          .background-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensure image covers the full space */
+             /* Make sure the image stays in the background */
+        }
+        
+        .upload-container {
+            display: flex;
+            align-items: center;
+        }
+        #selected-message {
+            margin-top: 5px;
+            font-weight: normal;
+            color: greenyellow;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+      
+        .container {
+            padding: 80px;
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;  /* Ensure the form is above the image */
+            flex: 1;
+        }
+        footer {
+            background-color: blue;
+            padding: 20px;
+            margin-top: 20px;
+            bottom: 0;
+            width: 100%;
+        }
+        footer p {
+            margin: 0;
+            text-align: center;
+            color: white;
+        }
+      
+    </style>
+</head>
+<body>
+  
+<div class="background-container">
+    <!-- Background image -->
+    <img src="{% static 'images/RFPL_Tr.jpg' %}" alt="Background Image">
+
+    <div class="container">
+    
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">          
+            <ul class="navbar-nav custom-navbar-nav">
+              <li class="nav-item"><a class="nav-link" href="{% url 'item_list' %}">Consensus Planning</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'upload_excel' %}">Upload</a></li>
+        
+              <li class="nav-item ml-auto"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+          </nav>
+          <!--create_user  items  upload_excel  http://127.0.0.1:8000/user/create_user/? -->    
+        
+    </div>
+</div>
+</body>
+</html>
